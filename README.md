@@ -8,53 +8,25 @@ Para conocer mejor la distribución gaussiana, vamos a dejar a un lado las notas
 
 Estas son las opiniones (calificadas de 0 a 5) obtenidas por una película, donde 5 es la mejor nota que puede obtener la película: las famosas 5 estrellas que podemos encontrar en todos los sitios de críticas de cine.
 
-Opinión
+Opinión / Cantidad de votantes
 
-Cantidad de votantes
+5 / 42
 
-5
+4 / 96
 
-42
+3 / 132
 
-4
+2 / 124
 
-96
+1 / 88
 
-3
-
-132
-
-2
-
-124
-
-1
-
-88
-
-0
-
-58
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+0 / 58
 
 
 
 Si hacemos una representación gráfica de estos datos, obtenemos una forma particular: una campana.
 
-images/Ch03_12.PNG
+
 Curva de Gauss
 
 Ante este tipo de gráfico, podemos afirmar que la serie de observaciones sigue una ley matemática llamada ley normal o ley de Gauss (en honor a Karl Friederich Gauss (1777-1855)).
@@ -73,113 +45,11 @@ El 99,7 % de las observaciones están comprendidas en el intervalo que va desde 
 
 Ahora vamos a hacer algunos cálculos que al mismo tiempo nos permitirán ver cómo utilizar la idea de frecuencia en los cálculos de media y de desviación típica.
 
-Opinión (Xi)
-
-Cantidad de votantes (Ni)
-
-5
-
-40
-
-4
-
-99
-
-3
-
-145
-
-2
-
-133
-
-1
-
-96
-
-0
-
-40
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 Las opiniones corresponden a nuestros valores observados denominados Xi, y la cantidad de votantes se equipara a la cantidad de veces en que el valor observado ha sido elegido por los espectadores. Entonces hablamos de frecuencia de elección, que se denomina Ni.
 
 A fin de calcular la media de esta serie de observaciones, para cada observación hay que realizar el producto de las opiniones por la cantidad de votantes:
-
-Opinión (Xi)
-
-Cantidad de votantes
-
-(Ni)
-
-Productos
-
-(Ni * Xi)
-
-5
-
-40
-
-200
-
-4
-
-99
-
-396
-
-3
-
-145
-
-435
-
-2
-
-133
-
-266
-
-1
-
-96
-
-96
-
-0
-
-40
-
-0
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -203,74 +73,6 @@ Por ejemplo, para la primera observación tenemos:
 
 Lo que nos da la siguiente tabla:
 
-Opinión (Xi)
-
-Cantidad de votantes (Ni)
-
-Productos (Ni * Xi)
-
-Ni* ((Xi-media)2)
-
-5
-
-40
-
-200
-
-246,21
-
-4
-
-99
-
-396
-
-217,14
-
-3
-
-145
-
-435
-
-33,54
-
-2
-
-133
-
-266
-
-35,82
-
-1
-
-96
-
-96
-
-221,50
-
-0
-
-40
-
-0
-
-253,81
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -281,7 +83,6 @@ Varianza = (246,21 + 217,14 + 33,54 + 35,82 + 221,50 + 253,81)/553 = 1,82
 
 Por último, podemos terminar con la desviación típica calculando la raíz cuadrada de la varianza:
 
-images/Ch03_13.PNG
 Lo que da un valor de 1,35 para la desviación típica.
 
 Ahora le toca a usted examinar el reparto de las observaciones en función de las desviaciones entre la media y la desviación típica que permite definir los 68 %, 95 % y 97 % de repartos.
@@ -293,4 +94,57 @@ Cantidad de observaciones total: 553
 Cantidad de observaciones comprendidas entre 1 y 3 = 145 + 133 + 96 = 374
 
 Un porcentaje de 374/553 = 67,63 %
+
+
+Para ello hemos creado el siguiente código:
+```
+
+import csv
+import numpy as np
+import math
+lista1 = []
+lista2 = []
+with open(file="datosCriticapelicula.csv", mode="r") as f:
+    reader = csv.reader(f)
+       
+    for row in reader:
+        print("Opciones: {0}, {1}" .format(row[0], row[1]))
+        lista1.append(row[0])
+        lista2.append(row[1])
+
+print( "Columna 1: ", lista1)
+print("Columna 2: ",lista2)
+
+
+
+resultado= int(lista1[3])*int(lista2[3])
+print("Resultado: ", resultado)
+
+
+
+
+
+
+
+
+from collections import Counter
+import matplotlib.pyplot as plt
+class Estadistica:
+    
+        def __init__(self, caracteristica):
+            self.caracteristica = caracteristica
+            self.cantidad_valoraciones = np.array([42, 96, 132, 124, 88, 58])
+            self.cantidad_valoraciones_ordenadas = np.sort(self.cantidad_valoraciones)
+            self.cantidad_valoraciones_ordenadas_invertidas = np.sort(self.cantidad_valoraciones)[::-1]
+            self.cantidad_valoraciones_ordenadas_invertidas_con_nan = np.sort(self.cantidad_valoraciones)[::-1]
+
+
+        def percentiles(cantidad_valoraciones_ordenadas_invertidas_con_nan):
+            cantidad_valoraciones = np.array([42, 96, 132, 124, 88, 58])
+            p = np.percentile(cantidad_valoraciones, [68, 95, 97])
+            return p
+print(Estadistica.percentiles("cantidad_valoraciones_ordenadas_invertidas_con_nan"))
+
+```
+
 
