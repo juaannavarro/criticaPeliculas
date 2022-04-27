@@ -3,7 +3,15 @@ import csv
 with open(file="datosCriticapelicula.csv", mode="r") as f:
     reader = csv.reader(f)
     for row in reader:
-        print(row)
+        print("Opciones: {0}, {1}".format(row[0], row[1]))
+        print(row.index[3])
+
+
+
+
+
+
+
 
 from collections import Counter
 from math import *
